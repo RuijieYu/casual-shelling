@@ -1,0 +1,28 @@
+#!/usr/bin/env bash # source
+
+## output to stderr; return value from variable RET
+# note that it breaks through the subshell, so outer function
+# need to use subshell to contain it
+err() {
+    >& 2 echo "$@";
+    exit "$((RET))";
+}
+
+## ensure a program succeeded
+# usage 1: `ensure program arguments`
+# usage 2:
+# `RET="$?" ensure -` reads return code of a previous call from _RET
+
+# both case: reads MSG when error
+ensure() {
+    if [ "$1" = - ]; then
+        :;
+    else
+        "$@";
+        RET="$?";
+    fi
+
+    if ((RET)); then
+        err "$MSG";
+    fi
+}
