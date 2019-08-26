@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# usage: > >(null)
+
+> /dev/null cat;
